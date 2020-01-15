@@ -2,21 +2,35 @@
     "name": "operatorts",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+    "main": "dist/index.js",
+    "author": "takenoko",
+    "license": "ISC",
+    "homepage": "https://github.com/TakenokoTech/operatorTs#readme",
+    "bugs": {
+        "url": "https://github.com/TakenokoTech/operatorTs/issues"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/TakenokoTech/operatorTs.git"
     },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/TakenokoTech/operatorTs/issues"
-    },
-    "homepage": "https://github.com/TakenokoTech/operatorTs#readme",
     "publishConfig": {
         "registry": "https://npm.pkg.github.com/"
+    },
+    "scripts": {
+        "build": "rm -rf ./build/* && tsc",
+        "coverage": "istanbul cover _mocha -- ./dist/test/*.test.js",
+        "test": "mocha ./dist/test/*.test.js",
+        "test:windows": "tsc && npm run test"
+    },
+    "dependencies": {
+        "typescript": "^3.7.4"
+    },
+    "devDependencies": {
+        "@types/mocha": "^5.2.7",
+        "@types/power-assert": "^1.5.3",
+        "istanbul": "^0.4.5",
+        "mocha": "^7.0.0",
+        "power-assert": "^1.6.1",
+        "remap-istanbul": "^0.13.0"
     }
 }
