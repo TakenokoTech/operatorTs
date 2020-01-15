@@ -1,9 +1,9 @@
 {
-    "name": "operatorts",
+    "name": "takenokotech/operatorts",
     "version": "1.0.0",
     "description": "",
     "main": "dist/index.js",
-    "author": "takenoko",
+    "author": "takenokotech",
     "license": "ISC",
     "homepage": "https://github.com/TakenokoTech/operatorTs#readme",
     "bugs": {
