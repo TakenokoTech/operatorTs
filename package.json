@@ -1,5 +1,5 @@
 {
-    "name": "operatorts",
+    "name": "@takenokotech/operatorts",
     "version": "0.0.1",
     "description": "",
     "main": "dist/index.js",
