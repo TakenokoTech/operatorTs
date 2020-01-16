@@ -4,3 +4,5 @@
 src/
 test/
 sample/
+
+tsconfig.json
