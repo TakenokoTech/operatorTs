@@ -20,9 +20,11 @@
         "build": "rm -rf ./build/* && tsc",
         "test": "tsc -p test/ && mocha _test_/**/*.test.js",
         "coverage": "istanbul cover _mocha -- _test_/**/*.test.js",
-        "build:windows": "tsc",
-        "test:windows": "tsc && npm run test",
-        "clean:windows": "rmdir /s /q dist && rmdir /s /q _test_"
+        "watch:test": "tsc -w -p test/",
+        "watch:mocha": "mocha -w _test_/**/*.test.js",
+        "windows:build:": "tsc",
+        "windows:test": "tsc && npm run test",
+        "windows:clean": "rmdir /s /q dist && rmdir /s /q _test_"
     },
     "dependencies": {},
     "devDependencies": {
