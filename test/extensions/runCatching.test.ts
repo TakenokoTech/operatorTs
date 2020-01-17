@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import "../../src/extensions/any.extensions";
+import "../../src/extensions/runCatching";
 
 const assertError = async (block: Promise<any>) => {
     try {

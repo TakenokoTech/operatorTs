@@ -1,1 +1,1 @@
-import "./extensions/number.extensions";
+import "./extensions/runCatching";
