@@ -3,6 +3,8 @@
 
 src/
 test/
+_test_/
 sample/
+coverage/
 
 tsconfig.json

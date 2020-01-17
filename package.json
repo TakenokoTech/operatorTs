@@ -1,6 +1,6 @@
 {
     "name": "@takenokotech/operatorts",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "",
     "main": "dist/index.js",
     "author": "takenokotech",
@@ -18,9 +18,11 @@
     },
     "scripts": {
         "build": "rm -rf ./build/* && tsc",
-        "coverage": "istanbul cover _mocha -- ./dist/test/*.test.js",
-        "test": "mocha ./dist/test/*.test.js",
-        "test:windows": "tsc && npm run test"
+        "test": "tsc -p test/ && mocha _test_/**/*.test.js",
+        "coverage": "istanbul cover _mocha -- _test_/**/*.test.js",
+        "build:windows": "tsc",
+        "test:windows": "tsc && npm run test",
+        "clean:windows": "rmdir /s /q dist && rmdir /s /q _test_"
     },
     "dependencies": {},
     "devDependencies": {
