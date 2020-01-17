@@ -25,7 +25,7 @@
         "watch:mocha": "mocha -w _test_/**/*.test.js",
         "windows:build:": "tsc",
         "windows:test": "tsc && npm run test",
-        "windows:clean": "rmdir /s /q dist && rmdir /s /q _test_"
+        "windows:clean": "tsc && rmdir /s /q  dist && rmdir /s /q _test_"
     },
     "dependencies": {},
     "devDependencies": {
