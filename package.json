@@ -19,7 +19,7 @@
     "scripts": {
         "build": "rm -rf ./build/* && tsc",
         "test": "tsc -p test/",
-        "mocha": "mocha _test_/**/*.test.js",
+        "mocha": "mocha _test_ --recursive",
         "coverage": "istanbul cover _mocha -- _test_/**/*.test.js",
         "watch:test": "tsc -w -p test/",
         "watch:mocha": "mocha -w _test_/**/*.test.js",
