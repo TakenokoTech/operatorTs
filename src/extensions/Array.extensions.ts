@@ -4,6 +4,7 @@ declare global {
     interface Array<T> {
         any<T>(block: (it: T) => Boolean): Boolean;
         all<T>(block: (it: T) => Boolean): Boolean;
+        groupBy<T, K>(block: (it: T) => string | number): { [key: string]: Array<T> };
     }
 }
 
@@ -19,4 +20,14 @@ Array.prototype.all = function<T>(block: (it: T) => Boolean): Boolean {
         if (!block(a)) return false;
     }
     return true;
+};
+
+Array.prototype.groupBy = function<T, K>(block: (it: T) => string | number): { [key: string]: Array<T> } {
+    const map: { [key: string]: Array<T> } = {};
+    for (const a of this) {
+        const key = block(a);
+        if (!map[key]) map[key] = [];
+        map[key].push(a);
+    }
+    return map;
 };
