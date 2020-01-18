@@ -18,22 +18,19 @@
     },
     "scripts": {
         "build": "rm -rf ./build/* && tsc",
-        "test": "tsc -p test/ && mocha _test_ --recursive",
-        "coverage": "istanbul cover _mocha -- _test_/**/*.test.js",
-        "watch:test": "tsc -w -p test/",
-        "watch:mocha": "mocha -w _test_/**/*.test.js",
+        "test": "jest",
+        "watch:build": "tsc -w",
+        "watch:test": "jest --watchAll",
         "windows:build:": "tsc",
-        "windows:test": "tsc && npm run test",
         "windows:clean": "tsc && rmdir /s /q  dist && rmdir /s /q _test_"
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/mocha": "^5.2.7",
+        "@types/jest": "^24.9.0",
         "@types/power-assert": "^1.5.3",
-        "istanbul": "^0.4.5",
-        "mocha": "^7.0.0",
+        "jest": "^24.9.0",
         "power-assert": "^1.6.1",
-        "remap-istanbul": "^0.13.0",
-        "typescript": "^3.7.4"
+        "ts-jest": "^24.3.0",
+        "typescript": "^3.7.5"
     }
 }
