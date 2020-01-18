@@ -8,4 +8,6 @@ sample/
 coverage/
 reports/
 
+.prettierrc.yaml
 tsconfig.json
+jest.config.js

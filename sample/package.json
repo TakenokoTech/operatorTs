@@ -1,0 +1,15 @@
+{
+    "name": "sample",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node --experimental-modules app.mjs",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@takenokotech/operatorts": "0.0.6"
+    }
+}
