@@ -5,7 +5,7 @@ describe("Extensions Array", () => {
     it("success: any", async () => {
         const a: Array<String> = ["a", "b", "c"];
         const expected = true;
-        const actual = a.any(it => it == "a");
+        const actual = a.any(it => it == "c");
         assert.deepEqual(expected, actual);
     });
 
