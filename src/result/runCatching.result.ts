@@ -1,16 +1,30 @@
 export {};
 
 declare global {
+    interface Boolean {
+        runCatching<T>(block: (arg: Boolean) => T): Promise<T>;
+    }
     interface String {
         runCatching<T>(block: (arg: String) => T): Promise<T>;
     }
     interface Number {
         runCatching<T>(block: (arg: Number) => T): Promise<T>;
     }
+    interface Object {
+        runCatching<T>(block: (arg: Object) => T): Promise<T>;
+    }
     interface Promise<T> {
         runCatching<T, U>(block: (arg: Promise<T>) => U): Promise<U>;
     }
 }
+
+Boolean.prototype.runCatching = function<T>(block: (arg: Boolean) => T): Promise<T> {
+    try {
+        return Promise.resolve(block(this));
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
 
 String.prototype.runCatching = function<T>(block: (arg: String) => T): Promise<T> {
     try {
@@ -21,6 +35,14 @@ String.prototype.runCatching = function<T>(block: (arg: String) => T): Promise<T
 };
 
 Number.prototype.runCatching = function<T>(block: (arg: Number) => T): Promise<T> {
+    try {
+        return Promise.resolve(block(this));
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+Object.prototype.runCatching = function<T>(block: (arg: Object) => T): Promise<T> {
     try {
         return Promise.resolve(block(this));
     } catch (error) {

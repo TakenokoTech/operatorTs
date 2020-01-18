@@ -26,7 +26,7 @@ module.exports = {
     collectCoverageFrom: ["src/**/**.ts"],
 
     // The directory where Jest should output its coverage files
-    coverageDirectory: "coverage",
+    coverageDirectory: "reports/coverage",
 
     // An array of regexp pattern strings used to skip coverage collection
     // coveragePathIgnorePatterns: [
@@ -109,7 +109,7 @@ module.exports = {
     // projects: null,
 
     // Use this configuration option to add custom reporters to Jest
-    // reporters: undefined,
+    reporters: ["default", ["jest-junit", { suiteName: "jest tests", outputDirectory: "reports/jest", outputName: "js-test-results.xml" }]],
 
     // Automatically reset mock state between every test
     // resetMocks: false,

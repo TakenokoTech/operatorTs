@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import "../../src/extensions/runCatching";
+import "../../src/result/runCatching.result";
 
 const assertError = async (block: Promise<any>) => {
     try {
@@ -11,6 +11,25 @@ const assertError = async (block: Promise<any>) => {
 };
 
 describe("Extensions runCatching()", () => {
+    it("success: Boolean", async () => {
+        const a: Boolean = true;
+        const expected = `arg=true is success`;
+        const actual = await a.runCatching(arg => `arg=${arg} is success`);
+        assert.equal(expected, actual);
+        // console.log(`${expected}`, `${actual}`);
+    });
+
+    it("failed: Boolean", async () => {
+        const a: Boolean = true;
+        const expected = new Error(`arg=true is error`);
+        const actual = await assertError(
+            a.runCatching(arg => {
+                throw new Error(`arg=${arg} is error`);
+            }),
+        );
+        assert.equal(`${expected}`, `${actual}`);
+        // console.log(`${expected}`, `${actual}`);
+    });
     it("success: String", async () => {
         const a: String = "test";
         const expected = `arg=test is success`;
@@ -19,7 +38,7 @@ describe("Extensions runCatching()", () => {
         // console.log(`${expected}`, `${actual}`);
     });
 
-    it("error: String", async () => {
+    it("failed: String", async () => {
         const a: String = "test";
         const expected = new Error(`arg=test is error`);
         const actual = await assertError(
@@ -39,12 +58,32 @@ describe("Extensions runCatching()", () => {
         // console.log(`${expected}`, `${actual}`);
     });
 
-    it("error: Number", async () => {
+    it("failed: Number", async () => {
         const a: Number = 111;
         const expected = new Error(`arg=111 is error`);
         const actual = await assertError(
             a.runCatching(arg => {
                 throw new Error(`arg=${arg} is error`);
+            }),
+        );
+        assert.equal(`${expected}`, `${actual}`);
+        // console.log(`${expected}`, `${actual}`);
+    });
+
+    it("success: Object", async () => {
+        const a: any = {};
+        const expected = `arg={} is success`;
+        const actual = await a.runCatching((arg: {}) => `arg=${JSON.stringify(arg)} is success`);
+        assert.equal(expected, actual);
+        // console.log(`${expected}`, `${actual}`);
+    });
+
+    it("failed: Object", async () => {
+        const a: any = {};
+        const expected = new Error(`arg={} is error`);
+        const actual = await assertError(
+            a.runCatching((arg: {}) => {
+                throw new Error(`arg=${JSON.stringify(arg)} is error`);
             }),
         );
         assert.equal(`${expected}`, `${actual}`);
@@ -59,7 +98,7 @@ describe("Extensions runCatching()", () => {
         // console.log(`${expected}`, `${actual}`);
     });
 
-    it("error: Promise", async () => {
+    it("failed: Promise", async () => {
         const a: Promise<String> = Promise.resolve("test");
         const expected = new Error(`arg=test is error`);
         const actual = await assertError(

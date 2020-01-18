@@ -17,18 +17,19 @@
         "registry": "https://npm.pkg.github.com/"
     },
     "scripts": {
-        "build": "rm -rf ./build/* && tsc",
+        "build": "rm -rf ./dist/* && tsc",
         "test": "jest",
         "watch:build": "tsc -w",
-        "watch:test": "jest --watchAll",
+        "watch:test": "jest --watchAll --silent=false --verbose false",
         "windows:build:": "tsc",
-        "windows:clean": "tsc && rmdir /s /q  dist && rmdir /s /q _test_"
+        "windows:clean": "tsc && rmdir /s /q dist coverage"
     },
     "dependencies": {},
     "devDependencies": {
         "@types/jest": "^24.9.0",
         "@types/power-assert": "^1.5.3",
         "jest": "^24.9.0",
+        "jest-junit": "^10.0.0",
         "power-assert": "^1.6.1",
         "ts-jest": "^24.3.0",
         "typescript": "^3.7.5"
