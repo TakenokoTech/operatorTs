@@ -6,5 +6,6 @@ test/
 _test_/
 sample/
 coverage/
+reports/
 
 tsconfig.json
