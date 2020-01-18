@@ -1,6 +1,6 @@
 {
     "name": "@takenokotech/operatorts",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "",
     "main": "dist/index.js",
     "author": "takenokotech",
@@ -21,7 +21,7 @@
         "test": "jest",
         "watch:build": "tsc -w",
         "watch:test": "jest --watchAll --silent=false --verbose false",
-        "windows:build:": "tsc",
+        "windows:build": "tsc",
         "windows:clean": "tsc && rmdir /s /q dist coverage"
     },
     "dependencies": {},
