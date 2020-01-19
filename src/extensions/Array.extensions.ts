@@ -2,9 +2,9 @@ export {};
 
 declare global {
     interface Array<T> {
-        any<T>(block: (it: T) => Boolean): Boolean;
-        all<T>(block: (it: T) => Boolean): Boolean;
-        groupBy<T, K>(block: (it: T) => string | number): { [key: string]: Array<T> };
+        any(block: (it: T) => Boolean): Boolean;
+        all(block: (it: T) => Boolean): Boolean;
+        groupBy<K>(block: (it: T) => string | number): { [key: string]: Array<T> };
     }
 }
 
