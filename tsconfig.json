@@ -65,5 +65,5 @@
     },
     // "include": ["src/**/*"],
     // "exclude": ["test/**/*", "node_modules"],
-    "files": ["./src/index.ts", "./src/main.ts"]
+    "files": ["./src/index.ts"]
 }
