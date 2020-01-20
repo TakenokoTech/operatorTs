@@ -1,51 +1,39 @@
-type Optional<T> = T | null;
+import { Queue } from "./Queue";
 
-// class Queue<E> {
-//     resolve: (value?: any) => void;
-//     q: Promise<any>;
+class ChannelPromise<E> {
+    public isFinished = false;
+    public promise: Promise<any> | null = null;
+    private resolver: ((value: E) => void) | null = null;
 
-//     constructor() {
-//         this.resolve = () => {};
-//         this.q = new Promise(resolve => {
-//             this.resolve = resolve;
-//         });
-//     }
+    init() {
+        this.promise = new Promise(resolve => (this.resolver = resolve));
+        this.isFinished = false;
+    }
 
-//     add(v: E) {
-//         this.resolve(v);
-//     }
-// }
+    resolve(v: E) {
+        this.resolver && this.resolver(v);
+        this.isFinished = true;
+    }
+}
 
 class Channel<E> {
-    isFinished = false;
-    resolve: ((value?: any) => void) | null = null;
-    queue: Promise<any> | null = null;
-    q: any[] = [];
+    private cPromise: ChannelPromise<E> = new ChannelPromise<E>();
+    private queue: Queue<E> = new Queue<E>();
 
-    send(element: E) {
-        if (this.isFinished) {
-            this.q.push(element);
-        } else {
-            this.resolve && this.resolve(element);
-            this.isFinished = true;
-        }
+    send(v: E) {
+        if (this.cPromise.isFinished) this.queue.push(v);
+        else this.cPromise.resolve(v);
     }
 
     async receive(): Promise<E> {
-        this.queue = new Promise(resolve => (this.resolve = resolve));
-        this.isFinished = false;
-
-        if (this.q.length >= 1) {
-            this.resolve && this.resolve(this.q[0]);
-            this.q = this.q.slice(1);
-            this.isFinished = true;
-        }
-
-        return this.queue;
+        this.cPromise.init();
+        const p = this.queue.pop();
+        if (p != null) this.cPromise.resolve(p);
+        return this.cPromise.promise;
     }
 
     cancel() {
-        this.q = [];
+        this.queue.clear();
     }
 }
 
