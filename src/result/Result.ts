@@ -1,5 +1,3 @@
-import "./runCatching.result";
-
 type ThrowableOrNull = Throwable | null;
 type Optional<T> = T | null;
 

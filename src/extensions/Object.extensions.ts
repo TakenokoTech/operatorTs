@@ -8,9 +8,8 @@ declare global {
         let<T>(block: (self: Object) => T): T;
         takeIf(block: (self: Object) => Boolean): Object | null;
         repeat(times: number, block: (count: number) => void): void;
+        runCatching<T>(block: (arg: Object) => T): Promise<T>;
     }
-
-    function repeat(times: number, block: (count: number) => void): void;
 }
 
 Object.prototype.run = function<T>(block: () => T): T {
@@ -37,4 +36,12 @@ Object.prototype.takeIf = function(block: (self: Object) => Boolean): Object | n
 
 Object.prototype.repeat = function(times: number, block: (count: number) => void): void {
     for (let index = 1; index <= times; index++) block(index);
+};
+
+Object.prototype.runCatching = function<T>(block: (arg: Object) => T): Promise<T> {
+    try {
+        return Promise.resolve(block(this));
+    } catch (error) {
+        return Promise.reject(error);
+    }
 };

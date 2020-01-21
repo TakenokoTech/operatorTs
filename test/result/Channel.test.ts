@@ -1,8 +1,8 @@
 import assert from "power-assert";
 import { Channel } from "../../src/result/Channel";
 
-describe("Channel", () => {
-    it("receive", async done => {
+describe("Channel.receive()", () => {
+    it("success", async done => {
         const channel = new Channel<number>();
 
         Promise.resolve().then(() => {
@@ -16,8 +16,10 @@ describe("Channel", () => {
 
         done();
     });
+});
 
-    it("cancel", async done => {
+describe("Channel.cancel()", () => {
+    it("success", async done => {
         const channel = new Channel<number>();
 
         Promise.resolve().then(() => {

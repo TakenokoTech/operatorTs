@@ -1,15 +1,16 @@
 import assert from "power-assert";
+import { assertError } from "../utils";
 import "../../src/extensions/Array.extensions";
 
-describe("Extensions Array", () => {
-    it("success: any", async () => {
+describe("Array.any()", () => {
+    it("success", async () => {
         const a: Array<String> = ["a", "b", "c"];
         const expected = true;
         const actual = a.any(it => it == "c");
         assert.deepEqual(expected, actual);
     });
 
-    it("failed: any", async () => {
+    it("failure", async () => {
         const a: Array<String> = ["a", "b", "c"];
         const expected = false;
         const actual = a.any(it => it == "d");
@@ -17,15 +18,15 @@ describe("Extensions Array", () => {
     });
 });
 
-describe("Extensions Array", () => {
-    it("success: all", async () => {
+describe("Array.all()", () => {
+    it("success", async () => {
         const b: Array<Number> = [10, 11, 12];
         const expected = true;
         const actual = b.all((it: Number) => it >= 10);
         assert.deepEqual(expected, actual);
     });
 
-    it("failed: all", async () => {
+    it("failure", async () => {
         const a: Array<String> = ["a", "b", "c"];
         const expected = false;
         const actual = a.all(it => it == "a");
@@ -33,8 +34,8 @@ describe("Extensions Array", () => {
     });
 });
 
-describe("Extensions Array", () => {
-    it("success: groupBy", async () => {
+describe("Array.groupBy()", () => {
+    it("success", async () => {
         const b: { a: number; b: number }[] = [
             { a: 1, b: 1 },
             { a: 1, b: 2 },
@@ -53,5 +54,25 @@ describe("Extensions Array", () => {
         };
         const actual = b.groupBy((it: { a: number; b: number }) => it.a);
         assert.deepEqual(expected, actual);
+    });
+});
+
+describe("Array.runCatching()", () => {
+    it("success", async () => {
+        const a: number[] = [1];
+        const expected = `arg=[1] is success`;
+        const actual = await a.runCatching(arg => `arg=${JSON.stringify(arg)} is success`);
+        assert.equal(expected, actual);
+    });
+
+    it("failure", async () => {
+        const a: number[] = [1];
+        const expected = new Error(`arg=[1] is error`);
+        const actual = await assertError(
+            a.runCatching(arg => {
+                throw new Error(`arg=${JSON.stringify(arg)} is error`);
+            }),
+        );
+        assert.equal(`${expected}`, `${actual}`);
     });
 });
