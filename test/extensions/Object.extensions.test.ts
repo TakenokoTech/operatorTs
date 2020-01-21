@@ -1,8 +1,9 @@
 import assert from "power-assert";
 import "../../src/extensions/Object.extensions";
+import { assertError } from "../utils";
 
-describe("Extensions Object", () => {
-    it("success: run", async () => {
+describe("Object.run()", () => {
+    it("success", async () => {
         const a: any = {
             a: `value a`,
         };
@@ -17,8 +18,10 @@ describe("Extensions Object", () => {
         assert.deepEqual(expected, actual);
         assert.deepEqual(a, { a: `value a` });
     });
+});
 
-    it("success: apply", async () => {
+describe("Object.apply()", () => {
+    it("success", async () => {
         const a: any = {
             a: `value a`,
         };
@@ -38,8 +41,10 @@ describe("Extensions Object", () => {
             });
         assert.deepEqual(expected, actual);
     });
+});
 
-    it("success: also", async () => {
+describe("Object.also()", () => {
+    it("success", async () => {
         const a: any = {
             a: `value a`,
         };
@@ -59,8 +64,10 @@ describe("Extensions Object", () => {
             });
         assert.deepEqual(expected, actual);
     });
+});
 
-    it("success: let", async () => {
+describe("Object.let()", () => {
+    it("success", async () => {
         const a: any = {
             a: `value a`,
         };
@@ -79,8 +86,10 @@ describe("Extensions Object", () => {
             }));
         assert.deepEqual(expected, actual);
     });
+});
 
-    it("success: takeIf", async () => {
+describe("Object.takeIf()", () => {
+    it("success", async () => {
         const a: any = { a: `value a` };
         const expected1 = { a: `value a` };
         const actual1 = a.takeIf((it: any) => it.a == `value a`);
@@ -90,13 +99,35 @@ describe("Extensions Object", () => {
         const actual2 = a.takeIf((it: any) => it.b == `value b`);
         assert.deepEqual(expected2, actual2);
     });
+});
 
-    it("success: repeat", async () => {
+describe("Object.repeat()", () => {
+    it("success", async () => {
         const a: number[] = [];
         const expected = [1, 2, 3];
         repeat(3, count => {
             a.push(count);
         });
         assert.deepEqual(expected, a);
+    });
+});
+
+describe("Object.runCatching()", () => {
+    it("success", async () => {
+        const a: any = {};
+        const expected = `arg={} is success`;
+        const actual = await a.runCatching((arg: {}) => `arg=${JSON.stringify(arg)} is success`);
+        assert.equal(expected, actual);
+    });
+
+    it("failure", async () => {
+        const a: any = {};
+        const expected = new Error(`arg={} is error`);
+        const actual = await assertError(
+            a.runCatching((arg: {}) => {
+                throw new Error(`arg=${JSON.stringify(arg)} is error`);
+            }),
+        );
+        assert.equal(`${expected}`, `${actual}`);
     });
 });

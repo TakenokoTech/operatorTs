@@ -5,6 +5,7 @@ declare global {
         any(block: (it: T) => Boolean): Boolean;
         all(block: (it: T) => Boolean): Boolean;
         groupBy<K>(block: (it: T) => string | number): { [key: string]: Array<T> };
+        runCatching<T, U>(block: (arg: Array<T>) => U): Promise<U>;
     }
 }
 
@@ -30,4 +31,12 @@ Array.prototype.groupBy = function<T, K>(block: (it: T) => string | number): { [
         map[key].push(a);
     }
     return map;
+};
+
+Array.prototype.runCatching = function<T, U>(block: (arg: Array<T>) => U): Promise<U> {
+    try {
+        return Promise.resolve(block(this));
+    } catch (error) {
+        return Promise.reject(error);
+    }
 };

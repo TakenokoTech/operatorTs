@@ -1,5 +1,15 @@
 export {};
 
 declare global {
-    interface Number {}
+    interface Number {
+        runCatching<T>(block: (arg: Number) => T): Promise<T>;
+    }
 }
+
+Number.prototype.runCatching = function<T>(block: (arg: Number) => T): Promise<T> {
+    try {
+        return Promise.resolve(block(this));
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
