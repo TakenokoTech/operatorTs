@@ -18,7 +18,7 @@
     },
     "scripts": {
         "build": "rm -rf ./dist/* && tsc",
-        "test": "jest --silent=false --verbose false",
+        "test": "jest --silent=false",
         "watch:build": "tsc -w",
         "watch:test": "jest --watchAll --silent=false --verbose false",
         "windows:build": "tsc",
