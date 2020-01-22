@@ -38,7 +38,7 @@ Object.prototype.repeat = function(times: number, block: (count: number) => void
     for (let index = 1; index <= times; index++) block(index);
 };
 
-Object.prototype.runCatching = function<T>(block: (arg: Object) => T): Promise<T> {
+Object.prototype.runCatching = async function<T>(block: (arg: Object) => T): Promise<T> {
     try {
         return Promise.resolve(block(this));
     } catch (error) {

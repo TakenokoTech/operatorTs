@@ -1,6 +1,6 @@
 import assert from "power-assert";
-import { assertError } from "../utils";
-import "../../src/extensions/global";
+import { assertError } from "./utils";
+import "../src/global";
 
 describe("runCatching()", () => {
     it("success", async () => {
@@ -11,11 +11,13 @@ describe("runCatching()", () => {
 
     it("failure", async () => {
         const expected = new Error(`error`);
-        const actual = await assertError(
-            runCatching(() => {
+
+        try {
+            await runCatching(() => {
                 throw new Error(`error`);
-            }),
-        );
-        assert.equal(`${expected}`, `${actual}`);
+            });
+        } catch (error) {
+            assert.equal(`${expected}`, `${error}`);
+        }
     });
 });

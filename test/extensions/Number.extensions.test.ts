@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { assertError } from "../utils";
+import { throwError } from "../utils";
 import "../../src/extensions/Number.extensions";
 
 describe("Number.runCatching()", () => {
@@ -13,11 +13,11 @@ describe("Number.runCatching()", () => {
     it("failure", async () => {
         const a: Number = 111;
         const expected = new Error(`arg=111 is error`);
-        const actual = await assertError(
-            a.runCatching(arg => {
-                throw new Error(`arg=${arg} is error`);
-            }),
-        );
-        assert.equal(`${expected}`, `${actual}`);
+
+        try {
+            await a.runCatching(throwError);
+        } catch (error) {
+            assert.equal(`${expected}`, `${error}`);
+        }
     });
 });

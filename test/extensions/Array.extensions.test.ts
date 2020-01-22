@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { assertError } from "../utils";
+import { throwError } from "../utils";
 import "../../src/extensions/Array.extensions";
 
 describe("Array.any()", () => {
@@ -60,19 +60,19 @@ describe("Array.groupBy()", () => {
 describe("Array.runCatching()", () => {
     it("success", async () => {
         const a: number[] = [1];
-        const expected = `arg=[1] is success`;
-        const actual = await a.runCatching(arg => `arg=${JSON.stringify(arg)} is success`);
+        const expected = `arg=1 is success`;
+        const actual = await a.runCatching(arg => `arg=${arg} is success`);
         assert.equal(expected, actual);
     });
 
     it("failure", async () => {
         const a: number[] = [1];
-        const expected = new Error(`arg=[1] is error`);
-        const actual = await assertError(
-            a.runCatching(arg => {
-                throw new Error(`arg=${JSON.stringify(arg)} is error`);
-            }),
-        );
-        assert.equal(`${expected}`, `${actual}`);
+        const expected = new Error(`arg=1 is error`);
+
+        try {
+            await a.runCatching(throwError);
+        } catch (error) {
+            assert.equal(`${expected}`, `${error}`);
+        }
     });
 });

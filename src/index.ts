@@ -1,4 +1,4 @@
-import "./extensions/global";
+import "./global";
 
 import "./extensions/Array.extensions";
 import "./extensions/Boolean.extensions";

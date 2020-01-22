@@ -6,6 +6,6 @@ declare global {
     }
 }
 
-Promise.prototype.runCatching = function<T, U>(block: (arg: T) => U): Promise<U> {
+Promise.prototype.runCatching = async function<T, U>(block: (arg: T) => U): Promise<U> {
     return this.then(block);
 };
