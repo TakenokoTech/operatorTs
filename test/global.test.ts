@@ -1,6 +1,6 @@
 import assert from "power-assert";
-import { assertError } from "./utils";
 import "../src/global";
+import { throwError } from "./utils";
 
 describe("runCatching()", () => {
     it("success", async () => {
@@ -10,12 +10,10 @@ describe("runCatching()", () => {
     });
 
     it("failure", async () => {
-        const expected = new Error(`error`);
+        const expected = new Error(`arg=undefined is error`);
 
         try {
-            await runCatching(() => {
-                throw new Error(`error`);
-            });
+            await runCatching(throwError);
         } catch (error) {
             assert.equal(`${expected}`, `${error}`);
         }
