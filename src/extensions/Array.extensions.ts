@@ -33,7 +33,7 @@ Array.prototype.groupBy = function<T, K>(block: (it: T) => string | number): { [
     return map;
 };
 
-Array.prototype.runCatching = function<T, U>(block: (arg: Array<T>) => U): Promise<U> {
+Array.prototype.runCatching = async function<T, U>(block: (arg: Array<T>) => U): Promise<U> {
     try {
         return Promise.resolve(block(this));
     } catch (error) {

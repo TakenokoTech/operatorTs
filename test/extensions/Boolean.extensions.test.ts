@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { assertError } from "../utils";
+import { throwError } from "../utils";
 import "../../src/extensions/Boolean.extensions";
 
 describe("Boolean.runCatching()", () => {
@@ -13,11 +13,11 @@ describe("Boolean.runCatching()", () => {
     it("failure", async () => {
         const a: Boolean = true;
         const expected = new Error(`arg=true is error`);
-        const actual = await assertError(
-            a.runCatching(arg => {
-                throw new Error(`arg=${arg} is error`);
-            }),
-        );
-        assert.equal(`${expected}`, `${actual}`);
+
+        try {
+            await a.runCatching(throwError);
+        } catch (error) {
+            assert.equal(`${expected}`, `${error}`);
+        }
     });
 });

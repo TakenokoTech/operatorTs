@@ -1,6 +1,6 @@
 import assert from "power-assert";
 import "../../src/extensions/Object.extensions";
-import { assertError } from "../utils";
+import { throwError } from "../utils";
 
 describe("Object.run()", () => {
     it("success", async () => {
@@ -123,11 +123,11 @@ describe("Object.runCatching()", () => {
     it("failure", async () => {
         const a: any = {};
         const expected = new Error(`arg={} is error`);
-        const actual = await assertError(
-            a.runCatching((arg: {}) => {
-                throw new Error(`arg=${JSON.stringify(arg)} is error`);
-            }),
-        );
-        assert.equal(`${expected}`, `${actual}`);
+
+        try {
+            a.runCatching(throwError);
+        } catch (error) {
+            assert.equal(`${expected}`, `${error}`);
+        }
     });
 });

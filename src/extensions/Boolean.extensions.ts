@@ -6,7 +6,7 @@ declare global {
     }
 }
 
-Boolean.prototype.runCatching = function<T>(block: (arg: Boolean) => T): Promise<T> {
+Boolean.prototype.runCatching = async function<T>(block: (arg: Boolean) => T): Promise<T> {
     try {
         return Promise.resolve(block(this));
     } catch (error) {

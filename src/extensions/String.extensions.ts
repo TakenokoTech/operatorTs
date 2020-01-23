@@ -6,7 +6,7 @@ declare global {
     }
 }
 
-String.prototype.runCatching = function<T>(block: (arg: String) => T): Promise<T> {
+String.prototype.runCatching = async function<T>(block: (arg: String) => T): Promise<T> {
     try {
         return Promise.resolve(block(this));
     } catch (error) {
