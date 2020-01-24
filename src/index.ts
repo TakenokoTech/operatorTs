@@ -7,5 +7,6 @@ import "./extensions/Object.extensions";
 import "./extensions/String.extensions";
 
 import "./result/Channel";
+import "./result/Future";
 import "./result/Queue";
 import "./result/Result";

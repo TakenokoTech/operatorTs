@@ -1,117 +1,34 @@
 import assert from "power-assert";
-import { ResultSuccess, ResultFailure } from "../../src/result/Result";
-
-class TestingError extends Error {
-    constructor(e?: string) {
-        super(e);
-        this.name = new.target.name;
-        Object.setPrototypeOf(this, new.target.prototype);
-    }
-}
+import { Result } from "../../src/result/Result";
 
 describe("Result.constructor()", () => {
-    it("success", async () => {
-        const result = ResultSuccess("success");
-        assert.deepEqual(result.isFailure, false);
-        assert.deepEqual(result.isSuccess, true);
-        assert.deepEqual(result.toString(), "Success(success)");
-    });
+    it("success", async done => {
+        const result = new Result<number>();
 
-    it("failure", async () => {
-        const result = ResultFailure("failure");
-        assert.deepEqual(result.isFailure, true);
-        assert.deepEqual(result.isSuccess, false);
-        assert.deepEqual(result.toString(), "Failure(failure)");
-    });
-});
-
-describe("Result.getOrNull()", () => {
-    it("successs", async () => {
-        const result = ResultSuccess("success");
-        assert.deepEqual(result.getOrNull(), "success");
-    });
-
-    it("failure", async () => {
-        const result = ResultFailure("failure");
-        assert.deepEqual(result.getOrNull(), null);
-    });
-
-    it("null", async () => {
-        const result = ResultSuccess();
-        assert.deepEqual(result.getOrNull(), null);
-        assert.deepEqual(result.isSuccess, true);
-        assert.deepEqual(result.isFailure, false);
-    });
-});
-
-describe("Result.exceptionOrNull()", () => {
-    it("success", async () => {
-        const result = ResultSuccess("success");
-        assert.deepEqual(result.exceptionOrNull(), null);
-    });
-
-    it("failure", async () => {
-        const result = ResultFailure("failure");
-        assert.deepEqual(result.exceptionOrNull(), { error: "failure" });
-    });
-});
-
-describe("Result.onSuccess(), Result.onFailure()", () => {
-    it("success", async () => {
-        const result = ResultSuccess({})
-            .onSuccess(res => {
-                res.value.a = "newA";
+        result
+            .onLoading(() => {
+                assert.deepEqual(result.value.type, "Loading");
             })
-            .onFailure(res => {
-                res.value.b = "newB";
-            });
-        assert.deepEqual(result.value, { a: "newA" });
-    });
-
-    it("failure", async () => {
-        const result = ResultFailure("failure")
-            .onSuccess(res => {
-                res.value.a = "newA";
+            .onSuccess(v => {
+                assert.deepEqual(1, v);
             })
-            .onFailure(res => {
-                res.value.b = "newB";
+            .onFailure(v => {
+                assert.deepEqual("error", v);
             });
-        assert.deepEqual(result.value, { error: "failure", b: "newB" });
-    });
-});
 
-describe("Result.map()", () => {
-    it("success", async () => {
-        const result = ResultSuccess("success").map(value => {
-            return `map ${value}`;
+        result.success(1).onSuccess(v => {
+            assert.deepEqual(1, v);
         });
-        assert.deepEqual(result.getOrNull(), "map success");
-        assert.deepEqual(result.exceptionOrNull(), null);
-    });
 
-    it("failure", async () => {
-        const result = ResultFailure("failure").map(value => {
-            return `map ${value}`;
-        });
-        assert.deepEqual(result.getOrNull(), null);
-        assert.deepEqual(result.exceptionOrNull(), { error: "failure" });
-    });
-});
+        result
+            .onLoading(() => {
+                assert.deepEqual(result.value.type, "Loading");
+            })
+            .loading();
 
-describe("Result.mapCatching()", () => {
-    it("success", async () => {
-        const result = ResultSuccess("success").mapCatching(value => {
-            return `map ${value}`;
+        result.failure("error").onFailure(v => {
+            assert.deepEqual("error", v);
+            done();
         });
-        assert.deepEqual(result.getOrNull(), "map success");
-        assert.deepEqual(result.exceptionOrNull(), null);
-    });
-
-    it("failure", async () => {
-        const result = ResultSuccess("success").mapCatching(value => {
-            throw new TestingError(`error`);
-        });
-        assert.deepEqual(result.getOrNull(), null);
-        assert.deepEqual(result.exceptionOrNull(), { error: "TestingError" });
     });
 });
