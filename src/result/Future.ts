@@ -1,67 +1,73 @@
-type ThrowableOrNull = Throwable | null;
 type Optional<T> = T | null;
+type FutureType<T> = Loading | Success<T> | Failure;
 
-interface Throwable {
+type Loading = {
+    type: "Loading";
+};
+
+type Success<T> = {
+    type: "Success";
+    value: Optional<T>;
+};
+
+type Failure = {
+    type: "Failure";
     error: string;
-}
+};
 
 class Future<T> {
-    value: Optional<any>;
+    promise: Promise<FutureType<T>> = Promise.resolve({ type: "Loading" });
+    onLoadingSet = new Set<() => void>([]);
+    onSuccessSet = new Set<(value: Optional<T>) => void>([]);
+    onFailureSet = new Set<(error: string) => void>([]);
 
-    constructor(value: Optional<any>) {
-        this.value = value;
-    }
+    value: FutureType<T> = {
+        type: "Loading",
+    };
 
-    get isSuccess(): boolean {
-        return (this.value as Throwable)?.error == null;
-    }
-
-    get isFailure(): boolean {
-        return (this.value as Throwable)?.error != null;
-    }
-
-    getOrNull(): Optional<T> {
-        if (this.isFailure) return null;
-        return this.value as T;
-    }
-
-    exceptionOrNull(): ThrowableOrNull {
-        if (this.isFailure) return this.value as Throwable;
-        return null;
-    }
-
-    onSuccess(action: (value: Future<T>) => void): Future<T> {
-        if (this.isSuccess) action(this);
+    loading(): Future<T> {
+        this.value = {
+            type: "Loading",
+        };
+        this.onLoadingSet.forEach(action => action());
         return this;
     }
 
-    onFailure(action: (value: Future<T>) => void): Future<T> {
-        if (this.isFailure) action(this);
+    success(value: Optional<T>): Future<T> {
+        this.value = {
+            type: "Success",
+            value: value,
+        };
+        this.onSuccessSet.forEach(action => action(value));
         return this;
     }
 
-    map<R>(transform: (value: T) => R): Future<R> {
-        if (this.isSuccess) {
-            return new Future(transform(this.value));
-        }
-        return new Future(this.value);
+    failure(error: string): Future<T> {
+        this.value = {
+            type: "Failure",
+            error: error,
+        };
+        this.onFailureSet.forEach(action => action(error));
+        return this;
     }
 
-    mapCatching<R>(transform: (value: T) => R): Future<R> {
-        try {
-            return new Future(transform(this.value));
-        } catch (error) {
-            return new Future({ error: error.name });
-        }
+    onLoading(action: () => void): Future<T> {
+        if (this.value.type == "Loading") action();
+        this.onLoadingSet.add(action);
+        return this;
     }
 
-    toString(): string {
-        if (this.isFailure) return `Failure(${this.value.error})`;
-        return `Success(${this.value})`;
+    onSuccess(action: (value: Optional<T>) => void): Future<T> {
+        if (this.value.type == "Success") action(this.value.value);
+        this.onSuccessSet.add(action);
+        return this;
+    }
+
+    onFailure(action: (error: string) => void): Future<T> {
+        if (this.value.type == "Failure") action(this.value.error);
+        this.onFailureSet.add(action);
+        return this;
     }
 }
 
-const FutureSuccess = <R>(value: Optional<any> = null): Future<R> => new Future(value);
-const FutureFailure = <R>(error: string): Future<R> => new Future({ error: error });
-
-export { Future, FutureSuccess, FutureFailure };
+export { Future };
