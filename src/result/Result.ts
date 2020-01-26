@@ -1,33 +1,47 @@
-type ThrowableOrNull = Throwable | null;
 type Optional<T> = T | null;
+type ResultType<T> = Success<T> | Failure;
 
-interface Throwable {
+type Success<T> = {
+    type: "Success";
+    message: Optional<T>;
+};
+
+type Failure = {
+    type: "Failure";
     error: string;
-}
+};
 
 class Result<T> {
-    value: Optional<any>;
+    value: ResultType<T>;
 
-    constructor(value: Optional<any>) {
+    constructor(value: ResultType<T>) {
         this.value = value;
     }
 
     get isSuccess(): boolean {
-        return (this.value as Throwable)?.error == null;
+        return this.value.type == "Success";
     }
 
     get isFailure(): boolean {
-        return (this.value as Throwable)?.error != null;
+        return this.value.type == "Failure";
     }
 
     getOrNull(): Optional<T> {
-        if (this.isFailure) return null;
-        return this.value as T;
+        switch (this.value.type) {
+            case "Success":
+                return this.value.message;
+            default:
+                return null;
+        }
     }
 
-    exceptionOrNull(): ThrowableOrNull {
-        if (this.isFailure) return this.value as Throwable;
-        return null;
+    exceptionOrNull(): Optional<string> {
+        switch (this.value.type) {
+            case "Failure":
+                return this.value.error;
+            default:
+                return null;
+        }
     }
 
     onSuccess(action: (value: Result<T>) => void): Result<T> {
@@ -40,28 +54,39 @@ class Result<T> {
         return this;
     }
 
-    map<R>(transform: (value: T) => R): Result<R> {
-        if (this.isSuccess) {
-            return new Result(transform(this.value));
+    map<R>(transform: (value: Optional<T>) => R): Result<R> {
+        switch (this.value.type) {
+            case "Success":
+                return new Result({ type: "Success", message: transform(this.value.message) });
+            default:
+                return new Result({ type: "Failure", error: this.value.error });
         }
-        return new Result(this.value);
     }
 
-    mapCatching<R>(transform: (value: T) => R): Result<R> {
+    mapCatching<R>(transform: (value: Optional<T>) => R): Result<R> {
         try {
-            return new Result(transform(this.value));
+            switch (this.value.type) {
+                case "Success":
+                    return new Result({ type: "Success", message: transform(this.value.message) });
+                default:
+                    return new Result({ type: "Failure", error: this.value.error });
+            }
         } catch (error) {
-            return new Result({ error: error.name });
+            return new Result({ type: "Failure", error: error.name });
         }
     }
 
     toString(): string {
-        if (this.isFailure) return `Failure(${this.value.error})`;
-        return `Success(${this.value})`;
+        switch (this.value.type) {
+            case "Success":
+                return `Success(${this.value.message})`;
+            default:
+                return `Failure(${this.value.error})`;
+        }
     }
 }
 
-const ResultSuccess = <R>(value: Optional<any> = null): Result<R> => new Result(value);
-const ResultFailure = <R>(error: string): Result<R> => new Result({ error: error });
+const ResultSuccess = <R>(message: Optional<any> = null): Result<R> => new Result({ type: "Success", message });
+const ResultFailure = <R>(error: string): Result<R> => new Result({ type: "Failure", error });
 
 export { Result, ResultSuccess, ResultFailure };
