@@ -1,6 +1,6 @@
 import assert from "power-assert";
 import "../../src/extensions/Object.extensions";
-import { throwError } from "../utils";
+import { throwError } from "../tools";
 
 describe("Object.run()", () => {
     it("success", async () => {
@@ -103,12 +103,13 @@ describe("Object.takeIf()", () => {
 
 describe("Object.repeat()", () => {
     it("success", async () => {
-        const a: number[] = [];
-        const expected = [1, 2, 3];
-        repeat(3, count => {
-            a.push(count);
+        const a: { a: string } = { a: `value a` };
+        const map: { [key: string]: number } = {};
+        const expected = { "1": "value a", "2": "value a", "3": "value a" };
+        a.repeat(3, (count, self: any) => {
+            map[count] = self.a;
         });
-        assert.deepEqual(expected, a);
+        assert.deepEqual(expected, map);
     });
 });
 
@@ -122,10 +123,10 @@ describe("Object.runCatching()", () => {
 
     it("failure", async () => {
         const a: any = {};
-        const expected = new Error(`arg={} is error`);
+        const expected = new Error(`arg=[object Object] is error`);
 
         try {
-            a.runCatching(throwError);
+            await a.runCatching(throwError);
         } catch (error) {
             assert.equal(`${expected}`, `${error}`);
         }

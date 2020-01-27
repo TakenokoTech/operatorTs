@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { Channel } from "../../src/result/Channel";
+import { Channel } from "../../src/utils/Channel";
 
 describe("Channel.receive()", () => {
     it("success", async done => {

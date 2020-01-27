@@ -1,6 +1,6 @@
 import assert from "power-assert";
 import "../src/global";
-import { throwError } from "./utils";
+import { throwError } from "./tools";
 
 describe("runCatching()", () => {
     it("success", async () => {
@@ -17,5 +17,16 @@ describe("runCatching()", () => {
         } catch (error) {
             assert.equal(`${expected}`, `${error}`);
         }
+    });
+});
+
+describe("repeat()", () => {
+    it("success", async () => {
+        const a: number[] = [];
+        const expected = [1, 2, 3];
+        repeat(3, count => {
+            a.push(count);
+        });
+        assert.deepEqual(expected, a);
     });
 });
