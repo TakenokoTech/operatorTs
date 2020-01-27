@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { ResultSuccess, ResultFailure } from "../../src/result/Result";
+import { ResultSuccess, ResultFailure } from "../../src/utils/Result";
 
 class TestingError extends Error {
     constructor(e?: string) {

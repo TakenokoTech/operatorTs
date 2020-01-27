@@ -1,4 +1,4 @@
-class Queue<E> {
+class Stack<E> {
     private q: E[] = [];
 
     push(v: E) {
@@ -7,8 +7,8 @@ class Queue<E> {
 
     pop(): E | null {
         if (this.q.length == 0) return null;
-        const v = this.q[0];
-        this.q = this.q.slice(1);
+        const v = this.q[this.q.length - 1];
+        this.q = this.q.slice(0, this.q.length - 1);
         return v;
     }
 
@@ -17,4 +17,4 @@ class Queue<E> {
     }
 }
 
-export { Queue };
+export { Stack };

@@ -1,6 +1,6 @@
 import assert from "power-assert";
 import "../src/global";
-import { throwError } from "./utils";
+import { throwError } from "./tools";
 
 describe("runCatching()", () => {
     it("success", async () => {

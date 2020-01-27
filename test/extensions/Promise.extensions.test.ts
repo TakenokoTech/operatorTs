@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { throwError } from "../utils";
+import { throwError } from "../tools";
 import "../../src/extensions/Promise.extensions";
 
 describe("Promise.runCatching()", () => {

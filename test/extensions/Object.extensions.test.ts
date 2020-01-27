@@ -1,6 +1,6 @@
 import assert from "power-assert";
 import "../../src/extensions/Object.extensions";
-import { throwError } from "../utils";
+import { throwError } from "../tools";
 
 describe("Object.run()", () => {
     it("success", async () => {

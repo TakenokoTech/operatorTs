@@ -21,13 +21,13 @@ class Channel<E> {
     private queue: Queue<E> = new Queue<E>();
 
     send(v: E) {
-        if (this.cPromise.isFinished) this.queue.push(v);
+        if (this.cPromise.isFinished) this.queue.enqueue(v);
         else this.cPromise.resolve(v);
     }
 
     async receive(): Promise<E> {
         this.cPromise.init();
-        const p = this.queue.pop();
+        const p = this.queue.dequeue();
         if (p != null) this.cPromise.resolve(p);
         return this.cPromise.promise;
     }

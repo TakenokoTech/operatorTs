@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { Strategy, Context } from "../../src/strategy/Strategy";
+import { Strategy, Context } from "../../src/utils/Strategy";
 
 class A implements Strategy<string, string> {
     execute(param: string): string {

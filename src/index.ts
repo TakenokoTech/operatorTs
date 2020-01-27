@@ -6,7 +6,7 @@ import "./extensions/Number.extensions";
 import "./extensions/Object.extensions";
 import "./extensions/String.extensions";
 
-import "./result/Channel";
-import "./result/Future";
-import "./result/Queue";
-import "./result/Result";
+import "./utils/Channel";
+import "./utils/Future";
+import "./utils/Queue";
+import "./utils/Result";

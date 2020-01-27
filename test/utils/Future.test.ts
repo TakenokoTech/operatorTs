@@ -1,5 +1,5 @@
 import assert from "power-assert";
-import { Future } from "../../src/result/Future";
+import { Future } from "../../src/utils/Future";
 
 describe("Future.constructor()", () => {
     it("success", async done => {
